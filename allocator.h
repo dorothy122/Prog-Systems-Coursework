@@ -10,4 +10,7 @@ int mm_read(void *ptr, size_t offset, void *buf, size_t len);
 int mm_write(void *ptr, size_t offset, const void *src, size_t len);
 void mm_free(void *ptr);
 
+// optional:
+// void *mm_realloc(void *ptr, size_t new_size);
+
 #endif
