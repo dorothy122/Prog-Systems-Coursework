@@ -1,11 +1,23 @@
-#include <allocator.h>
+#include "allocator.h"
 #include <stdint.h>
 
 // globals 
 uint8_t *heap_start;
 size_t total_heap_size;
 
+int main() {
 
+	// example testharness that just initialises a heap with a repeating pattern 
+	uint8_t heap[50];
+	uint8_t pattern[5] = {0xA5, 0x5A, 0xC3, 0x3C, 0x96};
+	for (int i = 0; i < 50; i++) {
+		heap[i] = pattern[i%5];
+	};
+
+	int result = mm_init(heap, sizeof(heap));
+	printf(result);
+
+};
 
 
 int mm_init(uint8_t *heap, size_t heap_size) {
@@ -20,7 +32,7 @@ heap_start = heap;
 total_heap_size = heap_size;
 
 // detect the reccuring 5-byte pattern - so can fill with this after freeing memory 
-int repeating_pattern[] = {0,0,0,0,0};
+unsigned char repeating_pattern[] = {0,0,0,0,0};
 for (int i = 0; i < 5; i++) {
 	repeating_pattern[i] = *(heap + i);
 };
