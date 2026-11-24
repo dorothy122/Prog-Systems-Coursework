@@ -1,9 +1,11 @@
 #include "allocator.h"
 #include <stdint.h>
+#include <stdio.h>
 
 // globals 
 uint8_t *heap_start;
 size_t total_heap_size;
+unsigned char repeating_pattern[] = {0,0,0,0,0}; // global so that mm_free() can access it 
 
 int main() {
 
@@ -15,7 +17,7 @@ int main() {
 	};
 
 	int result = mm_init(heap, sizeof(heap));
-	printf(result);
+	printf("\nResult: %d\n", result);
 
 };
 
@@ -26,19 +28,20 @@ int mm_init(uint8_t *heap, size_t heap_size) {
 // unit8_t = data type: unsigned int of eaxctly 8 bits
 // *heap = declared pointer that stores address of a heap (created in testharness.c)
 
-
 // remember where the heap start and its size (parameters)
 heap_start = heap;
 total_heap_size = heap_size;
 
 // detect the reccuring 5-byte pattern - so can fill with this after freeing memory 
-unsigned char repeating_pattern[] = {0,0,0,0,0};
 for (int i = 0; i < 5; i++) {
 	repeating_pattern[i] = *(heap + i);
+	printf("%d\n", repeating_pattern[i]);
 };
 
+return 0;
+
 // set up memory-management metadata (how will it keep track of which blocks 
-	// are gree, which are allocated, how large each is, where each starts + ends),
+	// are free, which are allocated, how large each is, where each starts + ends),
 
 
 // prepare heap for allocation
@@ -47,7 +50,7 @@ for (int i = 0; i < 5; i++) {
 
 
 
-
+return repeating_pattern;
 
 }
 
