@@ -7,6 +7,13 @@ uint8_t *heap_start;
 size_t total_heap_size;
 unsigned char repeating_pattern[] = {0,0,0,0,0}; // global so that mm_free() can access it 
 
+// store a blockHeader in first position of each block of memory in the heap 
+struct blockHeader {
+	size_t size;
+	int allocated; // 1 = allocated, 0 = not 
+};
+
+
 int main() {
 
 	// example testharness that just initialises a heap with a repeating pattern 
@@ -38,19 +45,21 @@ for (int i = 0; i < 5; i++) {
 	printf("%d\n", repeating_pattern[i]);
 };
 
-return 0;
 
-// set up memory-management metadata (how will it keep track of which blocks 
+// set up memory-management metadata (how it will keep track of which blocks 
 	// are free, which are allocated, how large each is, where each starts + ends),
+
+// initialise first block header (empty so one header)
+struct blockHeader *start_header = (struct blockHeader *)heap;
+start_header->size = heap_size;
+start_header->allocated = 0;
 
 
 // prepare heap for allocation
 
 
 
-
-
-return repeating_pattern;
+return 0;
 
 }
 
